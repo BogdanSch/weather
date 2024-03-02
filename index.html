@@ -15,21 +15,26 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 offset-md-3">
-                    <div class="weather-card">
-                        <h2 class="text-center mb-4">Weather Information</h2>
-                        <form id="cityForm">
-                            <div class="mb-3">
-                                <label for="city" class="form-label">Enter City Name</label>
-                                <input type="text" class="form-control" id="city" placeholder="City Name" required>
+                    <div class="weather-card card">
+                        <div class="card-body">
+                            <h2 class="text-center mb-4 card-title">Weather Information</h2>
+                            <form id="cityForm">
+                                <div class="mb-3">
+                                    <label for="city" class="form-label">Enter Your City Name</label>
+                                    <input type="text" class="form-control" id="city" placeholder="City Name" required>
+                                </div>
+                                <button type="submit" class="btn btn-outline-primary w-100">Get Weather</button>
+                            </form>
+                            <div class="weather-card__content mt-4 hidden">
+                                <div id="weatherIcon" class="text-center">
+                                </div>
+                                <h3 id="temperature" class="text-center mt-4">Temperature: <span></span></h3>
+                                <h3 id="temperatureFeelsLike" class="text-center">Temperature feels like: <span></span>
+                                </h3>
+                                <p id="weatherDescription" class="text-center"></p>
+                                <p id="location" class="text-center"></p>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">Get Weather</button>
-                        </form>
-                        <hr>
-                        <div id="weatherIcon" class="text-center">
                         </div>
-                        <h3 id="temperature" class="text-center mt-4"></h3>
-                        <p id="weatherDescription" class="text-center"></p>
-                        <p id="location" class="text-center"></p>
                     </div>
                 </div>
             </div>
