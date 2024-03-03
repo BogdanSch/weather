@@ -1,66 +1,57 @@
-let cityForm;
+(function ($, undefined) {
+  const cityForm = $("#cityForm");
 
-let infoContainer;
-let temperatureLabel;
-let temperatureFeelsLikeLabel;
-let weatherDescriptionContainer;
-let locationContainer;
-let weatherIcon;
+  const infoContainer = $(".weather-card__content");
+  const temperatureLabel = $("#temperature span");
+  const temperatureFeelsLikeLabel = $("#temperatureFeelsLike span");
+  const weatherDescriptionContainer = $("#weatherDescription");
+  const locationContainer = $("#location");
+  const weatherIconContainer = $("#weatherIcon");
+  const coordinatesContainer = $("#coordinates");
 
-document.addEventListener("DOMContentLoaded", function () {
-  cityForm = document.getElementById("cityForm");
-  const cityInput = document.getElementById("city");
+  const cityInput = $("#city");
 
-  infoContainer = document.querySelector(".weather-card__content");
-  temperatureLabel = document.querySelector("#temperature span");
-  temperatureFeelsLikeLabel = document.querySelector(
-    "#temperatureFeelsLike span"
-  );
-  weatherDescriptionContainer = document.getElementById("weatherDescription");
-  locationContainer = document.getElementById("location");
-  weatherIconContainer = document.getElementById("weatherIcon");
-
-  cityForm.addEventListener("submit", function (event) {
+  cityForm.on("submit", function (event) {
     event.preventDefault();
-    const city = cityInput.value;
-    fetchWeatherData(city);
+    const cityName = cityInput.val();
+    fetchWeatherData(cityName);
   });
-});
 
-function fetchWeatherData(city) {
-  const apiKey = "fada024d74ea8c82c596e30e55e3f9d1";
+  function fetchWeatherData(cityName) {
+    const apiKey = "fada024d74ea8c82c596e30e55e3f9d1";
 
-  fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+    $.getJSON(
+      `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`,
+      function (result) {
+        displayWeatherData(result);
       }
-      return response.json();
-    })
-    .then((data) => {
-      displayWeatherData(data);
-    })
-    .catch((error) => {
-      console.error("There was a problem with the fetch operation:", error);
-    });
-}
+    );
+  }
 
-function displayWeatherData(data) {
-  infoContainer.classList.remove("hidden");
-  const temperature = data.main.temp;
-  const temperatureFeelsLike = data.main["feels_like"];
+  function displayWeatherData(data) {
+    if (infoContainer.hasClass("hidden")) {
+      infoContainer.removeClass("hidden");
+    }
 
-  console.log(data.main);
+    const temperature = data.main.temp;
+    const temperatureFeelsLike = data.main["feels_like"];
 
-  const weatherDescription = data.weather[0].description;
-  const weatherIcon = data.weather[0].icon;
-  const location = data.name + ", " + data.sys.country;
+    const weatherDescription = data.weather[0].description;
+    const weatherIcon = data.weather[0].icon;
+    const location = data.name + ", " + data.sys.country;
+    const coordinates = data.coord;
 
-  temperatureLabel.textContent = temperature + "°C";
-  temperatureFeelsLikeLabel.textContent = temperatureFeelsLike + "°C";
-  weatherDescriptionContainer.textContent = weatherDescription;
-  locationContainer.textContent = location;
-  weatherIconContainer.innerHTML = `<img src="http://openweathermap.org/img/wn/${weatherIcon}.png" alt="Weather Icon" class="weather-icon">`;
-}
+    temperatureLabel.text(temperature + "°C");
+    temperatureFeelsLikeLabel.text(temperatureFeelsLike + "°C");
+    weatherDescriptionContainer.text(weatherDescription);
+    locationContainer.text(location);
+    weatherIconContainer.html(
+      `<img src="http://openweathermap.org/img/wn/${weatherIcon}.png" alt="Weather Icon" class="weather-icon">`
+    );
+    coordinatesContainer.text(
+      `Longtitude: ${coordinates.lon.toFixed(
+        2
+      )}, Latitude: ${coordinates.lat.toFixed(2)}`
+    );
+  }
+})(jQuery);

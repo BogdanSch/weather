@@ -33,7 +33,8 @@ body {
 }
 
 #weatherDescription,
-#location {
+#location,
+#coordinates {
     font-weight: 600;
     font-size: 18px;
     text-transform: capitalize;
